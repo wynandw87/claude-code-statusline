@@ -6,6 +6,8 @@ Custom status line for Claude Code CLI showing:
 - Session cost
 - Token counts (input/output)
 
+![Status line example](Example.png)
+
 ## Install
 
 ```bash
