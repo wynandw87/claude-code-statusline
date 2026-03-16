@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 # Claude Code status line script
 # Uses node instead of jq for JSON parsing (Windows compatibility)
+#
+# Displays:
+#   - Working directory (bold blue)
+#   - Context window usage bar (main conversation only - green/yellow/red)
+#   - Session cost including subagent usage
+#   - Cumulative token counts (input/output) including subagent usage
 
 input=$(cat)
 
@@ -11,10 +17,11 @@ process.stdin.on('data', c => chunks.push(c));
 process.stdin.on('end', () => {
   try {
     const d = JSON.parse(chunks.join(''));
+    // Context window percentage reflects main conversation only
     const pct = d.context_window?.used_percentage ?? '';
     const cwd = d.workspace?.current_dir ?? d.cwd ?? '';
+    // Cost and token totals include main conversation + all subagent usage
     const cost = d.cost?.total_cost_usd ?? '';
-
     const input_tok = d.context_window?.total_input_tokens ?? '';
     const output_tok = d.context_window?.total_output_tokens ?? '';
 
